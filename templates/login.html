@@ -1,0 +1,457 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login - Fardin Auth System</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+body {
+  background: linear-gradient(135deg, #1a0033, #2d004d, #4a0073);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Modern Navbar */
+.navbar-custom {
+  background: rgba(26, 0, 51, 0.9) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(147, 51, 234, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  padding: 12px 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: linear-gradient(45deg, #ff6b6b, #ffa726);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-link {
+  color: #e5e7eb !important;
+  font-weight: 500;
+  padding: 8px 16px !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin: 0 4px;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 107, 107, 0.2);
+  transform: translateY(-1px);
+}
+
+.nav-btn {
+  border-radius: 10px;
+  padding: 8px 20px !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  margin-left: 8px;
+}
+
+.btn-login {
+  background: linear-gradient(45deg, #ff6b6b, #ffa726);
+  color: white !important;
+}
+
+.btn-login:hover {
+  background: linear-gradient(45deg, #ff5252, #ff9800);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.btn-register {
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  color: white !important;
+}
+
+.btn-register:hover {
+  background: linear-gradient(45deg, #26a69a, #00796b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+}
+
+/* Login Container */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px 50px;
+}
+
+.glass-card {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 0 40px rgba(255, 107, 107, 0.3);
+  width: 100%;
+  max-width: 450px;
+}
+
+.form-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.2rem;
+  background: linear-gradient(45deg, #ff6b6b, #ffa726);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+
+.form-subtitle {
+  text-align: center;
+  color: #d1c4e9;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  color: white;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ff6b6b;
+  color: white;
+  box-shadow: 0 0 0 0.3rem rgba(255, 107, 107, 0.25);
+  transform: translateY(-2px);
+}
+
+.form-control::placeholder {
+  color: #b39ddb;
+}
+
+.btn-custom-primary {
+  background: linear-gradient(45deg, #ff6b6b, #ffa726);
+  border: none;
+  color: white;
+  padding: 14px 30px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.btn-custom-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+  color: white;
+}
+
+/* Social Login Buttons */
+.social-login-section {
+  margin: 25px 0;
+  text-align: center;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.divider-text {
+  padding: 0 15px;
+  color: #b39ddb;
+  font-size: 0.9rem;
+}
+
+.btn-google {
+  background: linear-gradient(45deg, #4285f4, #34a853);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.btn-google:hover {
+  background: linear-gradient(45deg, #3367d6, #2e8b57);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
+  color: white;
+}
+
+.btn-github {
+  background: linear-gradient(45deg, #333333, #666666);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-github:hover {
+  background: linear-gradient(45deg, #24292e, #444d56);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(51, 51, 51, 0.4);
+  color: white;
+}
+
+.social-icon {
+  font-size: 1.2rem;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.auth-links a {
+  color: #ffa726;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+  color: #ffcc80;
+  text-decoration: underline;
+}
+
+.alert {
+  border-radius: 12px;
+  border: none;
+  backdrop-filter: blur(10px);
+  padding: 15px 20px;
+  margin-bottom: 25px;
+}
+
+.alert-success {
+  background: rgba(46, 204, 113, 0.2);
+  color: #a9f5d1;
+  border-left: 4px solid #2ecc71;
+}
+
+.alert-error {
+  background: rgba(231, 76, 60, 0.2);
+  color: #f8c9c9;
+  border-left: 4px solid #e74c3c;
+}
+
+.form-check-input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.form-check-input:checked {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.form-check-label {
+  color: #d1c4e9;
+}
+
+.forgot-password {
+  color: #4ecdc4 !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: #81d4fa !important;
+  text-decoration: underline;
+}
+
+/* Animation for form */
+.glass-card {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Modern Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="fas fa-shield-alt me-2"></i>Fardin's Auth System
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon" style="filter: invert(1);">☰</span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="fas fa-home me-1"></i>Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-btn btn-login" href="/login">
+            <i class="fas fa-sign-in-alt me-1"></i>Login
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-btn btn-register" href="/register">
+            <i class="fas fa-user-plus me-1"></i>Register
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Login Form -->
+<div class="login-container">
+  <div class="glass-card">
+    <h1 class="form-title">Welcome Back 👋</h1>
+    <p class="form-subtitle">Sign in to your account to continue</p>
+
+    <!-- Messages -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+          <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} me-2"></i>
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Social Login Section -->
+    <div class="social-login-section">
+      <a href="{% provider_login_url 'google' %}" class="btn btn-google">
+        <i class="fab fa-google social-icon"></i>
+        Continue with Google
+      </a>
+    </div>
+
+    <div class="divider">
+      <span class="divider-text">or continue with email</span>
+    </div>
+
+    <!-- Regular Login Form -->
+    <form method="POST" action="{% url 'login' %}">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); border-right: none; color: #b39ddb;">
+            <i class="fas fa-user"></i>
+          </span>
+          <input type="text" class="form-control" name="username" placeholder="Username or Email" required style="border-left: none;">
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); border-right: none; color: #b39ddb;">
+            <i class="fas fa-lock"></i>
+          </span>
+          <input type="password" class="form-control" name="password" placeholder="Password" required style="border-left: none;">
+        </div>
+      </div>
+
+      <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="rememberMe">
+          <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-custom-primary">
+        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+      </button>
+    </form>
+
+    <div class="auth-links">
+      <p>Don't have an account? <a href="{% url 'register' %}">Create one here</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Add some interactive effects
+document.addEventListener('DOMContentLoaded', function() {
+  const inputs = document.querySelectorAll('.form-control');
+  
+  inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentElement.style.transform = 'scale(1.02)';
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentElement.style.transform = 'scale(1)';
+    });
+  });
+});
+</script>
+</body>
+</html>
